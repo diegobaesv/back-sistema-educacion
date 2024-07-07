@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,4 +5,80 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model alumnos {
+  id_alumno            Int       @id @default(autoincrement())
+  codigo               String    @db.VarChar(10)
+  documento_identidad  String    @db.Char(8)
+  nombres              String    @db.VarChar(100)
+  apellido_paterno     String    @db.VarChar(100)
+  apellido_materno     String    @db.VarChar(100)
+  correo_institucional String    @db.VarChar(150)
+  fecha_nacimiento     DateTime  @db.Date
+  sexo                 String    @db.Char(1)
+  direccion            String?   @db.VarChar(1024)
+  estado_auditoria     String    @default(dbgenerated("1")) @db.Char(1)
+  fecha_creacion       DateTime  @default(now()) @db.Timestamp(6)
+  fecha_modificacion   DateTime? @db.Timestamp(6)
+}
+
+model carreras {
+  id_carrera         Int       @id @default(autoincrement())
+  nombre             String    @db.VarChar(150)
+  director_nombre    String    @db.VarChar(150)
+  estado_auditoria   String    @default(dbgenerated("1")) @db.Char(1)
+  fecha_creacion     DateTime  @default(now()) @db.Timestamp(6)
+  fecha_modificacion DateTime? @db.Timestamp(6)
+  cursos             cursos[]
+}
+
+model cursos {
+  id_curso           Int       @id @default(autoincrement())
+  id_carrera         Int
+  nombre             String    @db.VarChar(250)
+  bloque             String?   @db.VarChar(100)
+  ciclo              String?   @db.VarChar(2)
+  malla              Int?
+  estado_auditoria   String    @default(dbgenerated("1")) @db.Char(1)
+  fecha_creacion     DateTime  @default(now()) @db.Timestamp(6)
+  fecha_modificacion DateTime? @db.Timestamp(6)
+  carreras           carreras  @relation(fields: [id_carrera], references: [id_carrera], onDelete: NoAction, onUpdate: NoAction, map: "fk_cursos_carreras")
+}
+
+model docentes {
+  id_docente           Int       @id @default(autoincrement())
+  codigo               String    @db.VarChar(10)
+  documento_identidad  String    @db.Char(8)
+  nombres              String    @db.VarChar(100)
+  apellido_paterno     String    @db.VarChar(100)
+  apellido_materno     String    @db.VarChar(100)
+  correo_institucional String    @db.VarChar(150)
+  fecha_nacimiento     DateTime  @db.Date
+  sexo                 String    @db.Char(1)
+  direccion            String?   @db.VarChar(1024)
+  especialidad         String    @db.VarChar(150)
+  estado_auditoria     String    @default(dbgenerated("1")) @db.Char(1)
+  fecha_creacion       DateTime  @default(now()) @db.Timestamp(6)
+  fecha_modificacion   DateTime? @db.Timestamp(6)
+}
+
+model perfiles {
+  id_perfil          Int       @id @default(autoincrement())
+  descripcion        String?   @db.VarChar(1024)
+  estado_auditoria   String    @default(dbgenerated("1")) @db.Char(1)
+  fecha_creacion     DateTime  @default(now()) @db.Time(6)
+  fecha_modificacion DateTime? @db.Time(6)
+}
+
+model sedes {
+  id_sede            Int       @id @default(autoincrement())
+  nombre             String    @db.VarChar(150)
+  departamento       String    @db.VarChar(50)
+  provincia          String    @db.VarChar(50)
+  distrito           String    @db.VarChar(50)
+  direccion          String    @db.VarChar(1024)
+  estado_auditoria   String    @default(dbgenerated("1")) @db.Char(1)
+  fecha_creacion     DateTime  @default(now()) @db.Time(6)
+  fecha_modificacion DateTime? @db.Time(6)
 }
