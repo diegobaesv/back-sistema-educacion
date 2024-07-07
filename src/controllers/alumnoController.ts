@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
+import * as alumnoService from "../services/alumnoService";
 
 export const insertarAlumno = (req: Request, res:Response)=>{
-    //validar
-    //llamar a la capa service
-    //responder lo obtenido del service
-    console.log('req.body',req.body);
-    res.send('Ejecutado insertarAlumno');
+    console.log('alumnoController::insertarAlumno');
+    const response = alumnoService.insertarAlumno(req.body);
+    res.json(response);
 }
