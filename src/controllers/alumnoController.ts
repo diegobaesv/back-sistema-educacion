@@ -12,3 +12,17 @@ export const listarAlumnos = async (req: Request, res: Response) => {
     const alumnos = await alumnoService.listarAlumnos();
     res.json(alumnos);
 }
+
+export const obtenerAlumno = async (req: Request, res: Response) => {
+    console.log('alumnoController::obtenerAlumno');
+    const { id } = req.params;
+    const alumno = await alumnoService.obtenerAlumno(Number(id));
+    res.json(alumno);
+}
+
+export const modificarAlumno = async (req: Request, res: Response) => {
+    console.log('alumnoController::modificarAlumno');
+    const { id } = req.params;
+    const response = await alumnoService.modificarAlumno(Number(id),req.body);
+    res.json(response);
+}
