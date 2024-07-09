@@ -18,6 +18,9 @@ export const listarAlumnos = async () => {
     const alumnos: alumnos[] = await prisma.alumnos.findMany({
         where: {
             estado_auditoria: '1'
+        },
+        orderBy: {
+            id_alumno: 'asc'
         }
     });
     return alumnos.map((alumno: alumnos)=> fromPrismaAlumno(alumno));
